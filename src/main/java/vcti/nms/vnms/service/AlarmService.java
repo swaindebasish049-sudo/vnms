@@ -33,7 +33,7 @@ public class AlarmService {
 
         alarmRepository.findByAlarmId(alarmId).ifPresent(alarm -> {
             alarm.setStatus("CLEARED");
-            alarm.setClearedTime(LocalDateTime.now().toString());
+            alarm.setClearedTime(LocalDateTime.now());
             alarmRepository.save(alarm);
         });
     }
@@ -44,7 +44,7 @@ public class AlarmService {
 
         for (Alarm alarm : activeAlarms) {
             alarm.setStatus("CLEARED");
-            alarm.setClearedTime(LocalDateTime.now().toString());
+            alarm.setClearedTime(LocalDateTime.now());
         }
 
         alarmRepository.saveAll(activeAlarms);

@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 public class AlarmConsumer {
 
     private final AlarmRepository alarmRepository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public AlarmConsumer(AlarmRepository alarmRepository) {
+    public AlarmConsumer(AlarmRepository alarmRepository,
+                         ObjectMapper objectMapper) {
         this.alarmRepository = alarmRepository;
+        this.objectMapper = objectMapper;
     }
 
     @KafkaListener(
@@ -29,7 +31,7 @@ public class AlarmConsumer {
 
             // Set NMS-specific fields
             alarm.setStatus("ACTIVE");
-            alarm.setRaisedTime(java.time.LocalDateTime.now().toString());
+            alarm.setRaisedTime(LocalDateTime.now());
 
             // Save to DB
             alarmRepository.save(alarm);

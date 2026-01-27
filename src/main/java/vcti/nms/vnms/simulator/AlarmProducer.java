@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 public class AlarmProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     @Value("${vnms.kafka.topic.alarm}")
     private String alarmTopic;
 
-    public AlarmProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public AlarmProducer(KafkaTemplate<String, String> kafkaTemplate,
+                         ObjectMapper objectMapper) {
         this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
     }
 
     public void sendAlarm(AlarmEvent event) {

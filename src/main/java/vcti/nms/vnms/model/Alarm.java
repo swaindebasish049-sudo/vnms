@@ -2,6 +2,8 @@ package vcti.nms.vnms.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "alarms")
 public class Alarm {
@@ -29,10 +31,10 @@ public class Alarm {
     private String status;     // ACTIVE, CLEARED
 
     @Column(name = "raised_time")
-    private String raisedTime;
+    private LocalDateTime raisedTime;
 
     @Column(name = "cleared_time")
-    private String clearedTime;
+    private LocalDateTime clearedTime;
 
     // Getters and Setters
 
@@ -92,19 +94,19 @@ public class Alarm {
         this.status = status;
     }
 
-    public String getRaisedTime() {
+    public LocalDateTime getRaisedTime() {
         return raisedTime;
     }
 
-    public void setRaisedTime(String raisedTime) {
+    public void setRaisedTime(LocalDateTime raisedTime) {
         this.raisedTime = raisedTime;
     }
 
-    public String getClearedTime() {
+    public LocalDateTime getClearedTime() {
         return clearedTime;
     }
 
-    public void setClearedTime(String clearedTime) {
+    public void setClearedTime(LocalDateTime clearedTime) {
         this.clearedTime = clearedTime;
     }
 }
