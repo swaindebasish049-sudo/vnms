@@ -12,6 +12,8 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     Optional<Alarm> findByAlarmId(String alarmId);
     List<Alarm> findByStatus(String status);
     List<Alarm> findAllByOrderByRaisedTimeDesc();
+    long countBySeverityAndRaisedTimeAfter(String severity, LocalDateTime time);
+
 
 
 }
