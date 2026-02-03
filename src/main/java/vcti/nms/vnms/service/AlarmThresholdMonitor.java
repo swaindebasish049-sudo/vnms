@@ -14,15 +14,20 @@ public class AlarmThresholdMonitor {
     private final EmailService emailService;
     private LocalDateTime lastIncidentTime = null;
     private static final int COOLDOWN_MINUTES = 30;
+    private final ReportFormatter reportFormatter;
+    private final AiReportService ollamaService;
+
 
     // TODO: Threshold settings, change it to 1000
     private static final long CRITICAL_THRESHOLD = 5;
 
     public AlarmThresholdMonitor(AlarmRepository alarmRepository,
-                                 AiReportService aiReportService, EmailService emailService) {
+                                 AiReportService aiReportService, EmailService emailService, ReportFormatter reportFormatter, AiReportService ollamaService) {
         this.alarmRepository = alarmRepository;
         this.aiReportService = aiReportService;
         this.emailService = emailService;
+        this.reportFormatter = reportFormatter;
+        this.ollamaService = ollamaService;
     }
 
 
@@ -36,27 +41,18 @@ public class AlarmThresholdMonitor {
 
         if (criticalCount >= CRITICAL_THRESHOLD) {
 
-            if (lastIncidentTime != null &&
-                    lastIncidentTime.isAfter(LocalDateTime.now().minusMinutes(COOLDOWN_MINUTES))) {
+            String aiReport = ollamaService.generateIncidentReport(criticalCount);
 
-                System.out.println("⏳ Incident already reported recently. Skipping email...");
-                return;
-            }
+            String htmlReport =
+                    reportFormatter.formatIncidentReportHtml(aiReport, criticalCount);
 
-            lastIncidentTime = LocalDateTime.now();
-
-            System.out.println("🚨 INCIDENT TRIGGERED!");
-
-            String report = aiReportService.generateIncidentReport(criticalCount);
-
-            emailService.sendSimpleMail(
+            emailService.sendHtmlMail(
                     "swaindebasish049@gmail.com",
-                    "VNMS Critical Alarm Incident Report",
-                    report
+                    "🚨 VNMS Alarm Storm Incident Report",
+                    htmlReport
             );
-
-            System.out.println("📩 Incident email sent successfully!");
-        } else {
+        }
+        else {
             System.out.println(
                     "✅ Alarm check OK: " + criticalCount +
                             " critical alarms in last 1 hour"
