@@ -52,5 +52,16 @@ public class AlarmService {
         return activeAlarms.size();
     }
 
+    public long countCriticalLastHours(int hours) {
+
+        LocalDateTime since =
+                LocalDateTime.now().minusHours(hours);
+
+        return alarmRepository.countBySeverityAndRaisedTimeAfter(
+                "CRITICAL", since
+        );
+    }
+
+
 
 }
