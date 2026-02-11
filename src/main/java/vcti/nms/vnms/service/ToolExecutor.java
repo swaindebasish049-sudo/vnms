@@ -23,6 +23,26 @@ public class ToolExecutor {
             return restTemplate.getForObject(url, Long.class);
         }
 
+        if (tool.equals("generateAlarmPdf")) {
+
+            int hours = (int) params.getOrDefault("hours", 1);
+
+            String url =
+                    "http://localhost:8080/api/reports/critical/pdf?hours="
+                            + hours;
+
+            return restTemplate.getForObject(url, String.class);
+        }
+
+        if (tool.equals("sendEmail")) {
+
+            String url = "http://localhost:8080/api/notifications/email";
+
+            return restTemplate.postForObject(url, params, String.class);
+        }
+
+
         return "Unknown tool";
     }
 }
+

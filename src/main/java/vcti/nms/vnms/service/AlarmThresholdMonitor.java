@@ -46,7 +46,7 @@ public class AlarmThresholdMonitor {
             String htmlReport =
                     reportFormatter.formatIncidentReportHtml(aiReport, criticalCount);
 
-            emailService.sendHtmlMail(
+            emailService.sendSimpleMail(
                     "swaindebasish049@gmail.com",
                     "🚨 VNMS Alarm Storm Incident Report",
                     htmlReport

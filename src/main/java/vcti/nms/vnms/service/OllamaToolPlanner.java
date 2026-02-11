@@ -21,28 +21,32 @@ public class OllamaToolPlanner {
         RestTemplate restTemplate = new RestTemplate();
 
         String systemPrompt = """
-       You are an AI tool selector for a Telecom NMS.
+       You are an AI tool selector for VNMS (Telecom NMS).
        
        You MUST return ONLY valid JSON.
        DO NOT explain.
        DO NOT add text.
        DO NOT add markdown.
        
-       Available tool:
-       - getCriticalAlarmCount(hours)
+       Available tools:
+       
+       1) getCriticalAlarmCount(hours)
+       2) generateAlarmPdf(hours)
+       3) sendEmail(to, subject, body)
+       
+       Rules:
+       - Choose the most appropriate tool
+       - Extract parameters from user input
+       - Respond with ONE tool only
        
        JSON format:
        {
-         "tool": "getCriticalAlarmCount",
-         "parameters": {
-           "hours": number
-         }
+       "tool": "<tool_name>",
+       "parameters": {
+       "<key>": <value>
+        }
        }
        
-       
-       Do NOT include "result".
-       Do NOT include any extra fields.
-
         User Prompt: %s
        """.formatted(userPrompt);
 
