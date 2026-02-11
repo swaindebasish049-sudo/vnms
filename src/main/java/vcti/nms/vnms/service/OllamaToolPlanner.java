@@ -22,11 +22,16 @@ public class OllamaToolPlanner {
 
         String systemPrompt = """
        You are an AI tool selector for VNMS (Telecom NMS).
+       You can call tools multiple times to complete a task.
+       
+       You are a STRICT JSON API.
        
        You MUST return ONLY valid JSON.
-       DO NOT explain.
-       DO NOT add text.
-       DO NOT add markdown.
+       You MUST NOT add text.
+       You MUST NOT add explanation.
+       You MUST NOT add markdown.
+       You MUST NOT add comments.
+       
        
        Available tools:
        
@@ -38,6 +43,7 @@ public class OllamaToolPlanner {
        - Choose the most appropriate tool
        - Extract parameters from user input
        - Respond with ONE tool only
+       - Return ONLY this format
        
        JSON format:
        {
@@ -46,6 +52,8 @@ public class OllamaToolPlanner {
        "<key>": <value>
         }
        }
+       
+       If you output anything else, it is considered invalid.
        
         User Prompt: %s
        """.formatted(userPrompt);
